@@ -18,10 +18,6 @@ const Main = () => {
     dispatch(actions.sumar());
   };
 
-  const handleRestaClick = () => {
-    dispatch(actions.restar());
-  };
-
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -41,7 +37,7 @@ const Main = () => {
           <button onClick={() => dispatch(actions.logOut())}>Log Out</button>
           <p>Hola {state.usuario.nombre}</p>
           <h2>Contador: {contador}</h2>
-          <button onClick={handleRestaClick}>Restar</button>
+          <button onClick={() => dispatch(actions.restar())}>Restar</button>
           <button onClick={handleSumaClick}>Sumar</button>
         </div>
       )}
