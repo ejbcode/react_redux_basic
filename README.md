@@ -284,15 +284,4 @@ Para modificar el store, usando el dispatch queda asi:
 `dispatch(actions.restar());`
 `<button onClick={() => dispatch( actions.restar ())}>Restar</button>`
 
-useSelector trae el state, y se lo asigna
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Para terminar de ver el proyecto funcionando, accedan al repo.[Repo Redux](https://github.com/ejbcode/react_redux_basic)
