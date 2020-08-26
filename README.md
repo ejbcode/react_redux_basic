@@ -113,7 +113,7 @@ El action se puede generar uno por cada estado y despues se importan combinados,
 se crea
 
 ```js
-//.src/redux/actions/index.js
+//.src/redux/actions/action.js
 
 import * as type from "../types";
 
