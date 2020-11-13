@@ -68,7 +68,9 @@ Los reducers se ayudan con el uso de switch, que permite estudiar cada caso acti
 ## Implementacion Redux con React
 
 Con el fin de poder ejemplificar redux, hagamos una pequeña app que utilice las practicas convencionales.
-<img src="./demo.gif">
+<img src="./demo.gif" />
+
+## dsdsf
 
 Primero crear un basico de React con
 
@@ -114,30 +116,28 @@ El action se puede generar uno por cada estado y despues se importan combinados,
 se crea
 
 ```js
-//.src/redux/actions/action.js
-
 import { types } from "../types/types";
 
-const sumar = () => {
+export const sumar = () => {
   return {
     type: types.SUMAR,
   };
 };
 
-const restar = () => {
+export const restar = () => {
   return {
     type: types.RESTAR,
   };
 };
 
-const logIn = (useData) => {
+export const logIn = (usuario) => {
   return {
     type: types.LOG_IN,
-    payload: userData,
+    payload: usuario,
   };
 };
 
-const logOut = () => {
+export const logOut = () => {
   return {
     type: types.LOG_OUT,
   };

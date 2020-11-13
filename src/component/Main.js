@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import actions from "../redux/actions/actions";
+import { logIn, logOut, restar, sumar } from "../redux/actions/actions";
 
 const Main = () => {
   const state = useSelector((state) => state.login);
@@ -11,11 +11,11 @@ const Main = () => {
   const [usuario, setUsuario] = useState({ nombre: "" });
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(actions.logIn(usuario));
+    dispatch(logIn(usuario));
     setUsuario({ nombre: "" });
   };
   const handleSumaClick = () => {
-    dispatch(actions.sumar());
+    dispatch(sumar());
   };
 
   return (
@@ -34,10 +34,10 @@ const Main = () => {
       </form>
       {!state.usuario ? null : (
         <div>
-          <button onClick={() => dispatch(actions.logOut())}>Log Out</button>
+          <button onClick={() => dispatch(logOut())}>Log Out</button>
           <p>Hola {state.usuario.nombre}</p>
           <h2>Contador: {contador}</h2>
-          <button onClick={() => dispatch(actions.restar())}>Restar</button>
+          <button onClick={() => dispatch(restar())}>Restar</button>
           <button onClick={handleSumaClick}>Sumar</button>
         </div>
       )}
