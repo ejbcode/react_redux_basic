@@ -92,16 +92,17 @@ Se hace un ejemplo donde tenemos dos estados separados, uno para incrementaun co
 
 ### Types
 
-Los types es simplemente un nombre que por convencion se utiliza uppercase. Con el uso del type evitamos quem se estila crear un archivo store.js, y este llamarlo en el app.js. Para asi dejar mas limioar codigo en nuestros actions y reducers.
+Los types es simplemente un nombre que por convencion se utiliza uppercase. Con el uso del type se estila crear un archivo store.js, y este llamarlo en el app.js. Para asi dejar mas limpio el codigo en nuestros actions y reducers.
 
 ```js
-//.src/redux/types/index.js
+//.src/redux/types/types.js
 
-export const INCREMENT = "INCREMENT";
-export const DECREMENT = "DECREMENT";
-
-export const SET_USER = "SET_USER";
-export const LOG_OUT = "LOG_OUT";
+export const types = {
+  SUMAR: "SUMAR",
+  RESTAR: "RESTAR",
+  LOG_IN: "LOG_IN",
+  LOG_OUT: "LOG_OUT",
+};
 ```
 
 Se nota facilmente dos bloques correspondientes los type de cada store
@@ -115,111 +116,94 @@ se crea
 ```js
 //.src/redux/actions/action.js
 
-import * as type from "../types";
+import { types } from "../types/types";
 
 const sumar = () => {
   return {
-    type: type.SUMAR,
+    type: types.SUMAR,
   };
 };
 
 const restar = () => {
   return {
-    type: type.RESTAR,
+    type: types.RESTAR,
   };
 };
 
 const logIn = (useData) => {
   return {
-    type: type.LOG_IN,
+    type: types.LOG_IN,
     payload: userData,
   };
 };
 
 const logOut = () => {
   return {
-    type: type.LOG_OUT,
+    type: types.LOG_OUT,
   };
 };
 ```
 
 ### Reducers
 
-Si bien el store inicial que esta en el archivo de reducer deberia ser uno solo, se puede usar varios store para dar mas orden y se combinan con combineReducers from "redux";
+Si bien el store inicial que esta en el archivo de reducer deberia ser uno solo, se puede usar varios store para dar mas orden y se combinan con _combineReducers from "redux"_;
 
 Se hace un ejemplo donde tenemos dos estados separados, uno para incrementa un contador, y el otro que maneje el state del login del usuario.
-
-Dentro de la carpeta Reducer se crea un archivo _index.js_, y en el se importaran tantos reducers se requieran para la app.
-
-```js
-//.src/redux/reducers/index.js
-import { combineReducers } from "redux";
-import contadorReducer from "./contadorReducer";
-import loginReducer from "./loginReducer";
-
-export default combineReducers({
-  contador: contadorReducer,
-  login: loginReducer,
-});
-```
 
 De esta forma se puede utilizar varios archivos de store, pero a la final se exporta uno solo como reducer. Tendremos dos gupo de valores que son _contador_ y _login_
 
 ```js
 //.src/redux/reducers/contadorReducer.js
-import * as type from "../types";
+import { types } from "../types/types";
 
-const initialState = {
-  contador: 0,
-};
-
-export default function (state = 0, action) {
+export const contadorReducer = (state = 0, action) => {
   switch (action.type) {
-    case type.SUMAR:
+    case types.SUMAR:
       return state + 1;
 
-    case type.RESTAR:
+    case types.RESTAR:
       return state - 1;
 
     default:
       return state;
   }
-}
+};
 ```
 
 ```js
 //.src/redux/reducers/loginReducer.js
-import * as type from "../types";
+import { types } from "../types/types";
 
 const initialState = { usuario: null, usuarioLogueado: false };
 
-export default function (state = initialState, action) {
+export const loginReducer = (state = initialState, action) => {
   switch (action.type) {
-    case type.LOG_OUT:
+    case types.LOG_OUT:
       return { ...state, usuario: null, usuarioLogueado: false };
 
-    case type.LOG_IN:
+    case types.LOG_IN:
       return { ...state, usuario: action.payload, usuarioLogueado: true };
 
     default:
       return state;
   }
-}
+};
 ```
 
 La estructura de los reducers es en forma de switch. Se importan los types. los reducers reciben dos parametros, el state que puede ser un arreglo con un state inicial y las acciones (el type y el payload).
 Es importante siempre devolver un default: return state;
 
-### Llevando al state a nuestra APP
+### Llevando los reducers al state
 
-Ya tenemos los types que son los nombres para usr en los actions que va a llamr con ese nombre a los reducers y va a ejecutar una funcion retornando un nuevo state. Ahora hay que colocar el state en la app para que este disponible.
+Ya tenemos los types que son los nombres para usar en los actions que va a llamar con ese nombre a los reducers y va a ejecutar una funcion retornando un nuevo state. Ahora hay que colocar el state en la app para que este disponible.
 
 Por convencion se estila crear un archivo store.js, y este llamarlo en el app.js para asi dejar mas limpio este ultimo.
 
 ```js
 //.src/redux/store.js
-import { createStore } from "redux";
-import reducer from "./reducers";
+import { combineReducers, createStore } from "redux";
+import { contadorReducer } from "./reducers/contadorReducer";
+import { loginReducer } from "./reducers/loginReducer";
 
 const devTool =
   typeof window === "object" &&
@@ -227,13 +211,18 @@ const devTool =
     ? window.__REDUX_DEVTOOLS_EXTENSION__()
     : (f) => f;
 
-const store = createStore(reducer, devTool);
+const reducers = combineReducers({
+  contador: contadorReducer,
+  login: loginReducer,
+});
+
+const store = createStore(reducers, devTool);
 
 export default store;
 ```
 
-Se importa importa {createStore} que como su nombre lo dice, crea sl store.
-Importamos el archivo que contiene los reducers combinados.
+Se importa importa {createStore} que como su nombre lo dice, crea el store.
+Importamos los reducers y los combinamos con _combineReducers_, tambien se estila combinarlos en un previo archivo e importar el archivo.
 
 Para aprovechar el redux devtools, debemos se agrega un codigo adicional que proporciona el desarrolador. A la final se exporta todo como store.
 

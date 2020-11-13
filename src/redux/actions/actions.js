@@ -1,27 +1,28 @@
-import * as type from "../types";
+import { types } from "../types/types";
+
 
 const sumar = () => {
   return {
-    type: type.SUMAR,
+    type: types.SUMAR,
   };
 };
 
 const restar = () => {
   return {
-    type: type.RESTAR,
+    type: types.RESTAR,
   };
 };
 
 const logIn = (usuario) => {
   return {
-    type: type.LOG_IN,
+    type: types.LOG_IN,
     payload: usuario,
   };
 };
 
 const logOut = () => {
   return {
-    type: type.LOG_OUT,
+    type: types.LOG_OUT,
   };
 };
 

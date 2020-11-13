@@ -1,11 +1,11 @@
-import * as type from "../types";
+import { types } from "../types/types";
 
-export default function (state = 0, action) {
+export const contadorReducer = (state = 0, action) => {
   switch (action.type) {
-    case type.SUMAR:
+    case types.SUMAR:
       return state + 1;
 
-    case type.RESTAR:
+    case types.RESTAR:
       return state - 1;
 
     default:
