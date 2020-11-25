@@ -1,9 +1,9 @@
 
 export const types =  {
   SUMAR: '[contadorReducer] SUMAR',
-  RESTAR: 'RESTAR',
+  RESTAR: '[contadorReducer] RESTAR',
   
-  LOG_IN: 'LOG_IN',
-  LOG_OUT: 'LOG_OUT',
+  LOG_IN: '[LoginReducer] Login',
+  LOG_OUT: '[LoginReducer] Logout',
 
 }

@@ -21,7 +21,7 @@ Es el objeto central que contiene el state de la aplicacion. Es creado usando el
 
 ```js
 import { createStore } from ‘redux’;
-let store = createStore(reducer);
+const store = createStore(reducer);
 ```
 
 ### Actions
@@ -37,9 +37,12 @@ Adicional se le puede pasar un _payload_ que es la info a cambiar. puede ser un 
 }
 ```
 
-Se puede usar **_Action Creators_** que son funciones que retornan acciones(los objetos que se le pasan al dispatch del store). Son opcionales pero es una buena practiva usarlas.
+Se puede usar **_Action Creators_** que son funciones que retornan acciones(los objetos que se le pasan al dispatch del store).
+Son opcionales pero es una buena practica usarlas.
 
-Asi que el ejemplo anterior en vez de pasar una accion, se utilizaria una funcion que contruye el action, quedano asi.
+Asi que el ejemplo anterior en vez de pasar una accion,
+se utilizaria una funcion que contruye el action, quedando
+asi.
 
 ```js
 const newItem = item => {
@@ -70,7 +73,7 @@ Los reducers se ayudan con el uso de switch, que permite estudiar cada caso acti
 Con el fin de poder ejemplificar redux, hagamos una pequeña app que utilice las practicas convencionales.
 <img src="./demo.gif" />
 
-## dsdsf
+## Pasos
 
 Primero crear un basico de React con
 
@@ -80,9 +83,25 @@ instalar las dos dependecias necesarias de redux que seria
 
 `npm i redux react-redux`
 
-La estructura de carpeta siempre varia segun la persona, si bien existen convenciones y buenas practicas, siempre existen ligeras diferencias. E se estila crear un archivo store.js, y este llamarlo en el app.js. Para asi dejar mas limiol boilerplate de redux puede ser un poco grande y a veces repetitivo. En ejemplos pequeños se evita usar las subcarpetas por comodidad y rapidez, pero si buscas rapidez y comodidad en una app pequeña, quizas es mejor irse con usecontext o directamente con props.
+La estructura de carpeta siempre varia segun la persona,
+si bien existen convenciones y buenas practicas,
+siempre existen ligeras diferencias.
+Se estila crear un archivo store.js, y este
+llamarlo en el app.js. El
+boilerplate de redux puede ser un poco grande
+y a veces repetitivo. En ejemplos pequeños se evita
+usar las subcarpetas por comodidad y rapidez,
+pero si buscas rapidez y comodidad en una app
+pequeña, quizas es mejor irse con usecontext o
+directamente con props.
 
-La convencion indica que dentro de .src/ se debe tener una carpeta para se estila crear un archivo store.js, y este llamarlo en el app.js. Para asi dejar mas limio los actions, otra para los reducers. Aun se puede ir mas alla y creat una carpeta llamada redux y colocar todo dentro alli ordenado por subcarpeta y asi mantener mas ordenado y limpio la estructura de folder. Hagamos eso.
+La convencion indica que dentro de .src/ se estila crear un archivo store.js,
+y este llamarlo en el app.js. luego crear subcarpetas individuales
+para los actions, reducers y types
+Aun se puede ir mas alla y crear una carpeta llamada
+redux y colocar todo dentro alli ordenado por
+subcarpeta y asi mantener mas ordenado
+la estructura de folder. Hagamos eso.
 
 Se crea
 .src/redux/actions
@@ -94,16 +113,19 @@ Se hace un ejemplo donde tenemos dos estados separados, uno para incrementaun co
 
 ### Types
 
-Los types es simplemente un nombre que por convencion se utiliza uppercase. Con el uso del type se estila crear un archivo store.js, y este llamarlo en el app.js. Para asi dejar mas limpio el codigo en nuestros actions y reducers.
+Los types es simplemente un nombre que por
+convencion se utiliza uppercase. Como valor va lo que ira en el redux dev tools.
+Debe ser algo descriptivo
 
 ```js
 //.src/redux/types/types.js
 
 export const types = {
-  SUMAR: "SUMAR",
-  RESTAR: "RESTAR",
-  LOG_IN: "LOG_IN",
-  LOG_OUT: "LOG_OUT",
+  SUMAR: "[contadorReducer] SUMAR",
+  RESTAR: "[contadorReducer] RESTAR",
+
+  LOG_IN: "[LoginReducer] Login",
+  LOG_OUT: "[LoginReducer] Logout",
 };
 ```
 
@@ -111,7 +133,11 @@ Se nota facilmente dos bloques correspondientes los type de cada store
 
 ### Actions
 
-El action se puede generar uno por cada estado y despues se importan combinados, o se usa un solo archivo pero se separan para que visualmente se vea un bloque que corresponde a los actions de un store vs los otros actions.
+El action se puede generar uno por cada estado
+y despues se importan combinados, o se usa un solo
+archivo pero se separan para que visualmente se vea
+un bloque que corresponde a los actions de un store
+vs los otros actions.
 
 se crea
 
@@ -201,22 +227,21 @@ Por convencion se estila crear un archivo store.js, y este llamarlo en el app.js
 
 ```js
 //.src/redux/store.js
-import { combineReducers, createStore } from "redux";
+import { combineReducers, createStore, compose } from "redux";
 import { contadorReducer } from "./reducers/contadorReducer";
 import { loginReducer } from "./reducers/loginReducer";
 
-const devTool =
-  typeof window === "object" &&
-  typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== "undefined"
-    ? window.__REDUX_DEVTOOLS_EXTENSION__()
-    : (f) => f;
+const composeEnhancers =
+  (typeof window !== "undefined" &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+  compose;
 
 const reducers = combineReducers({
   contador: contadorReducer,
   login: loginReducer,
 });
 
-const store = createStore(reducers, devTool);
+const store = createStore(reducers, composeEnhancers());
 
 export default store;
 ```
